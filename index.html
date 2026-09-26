@@ -8,14 +8,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #0b0f19;
-            --card-bg: #131c2e;
+            --bg-color: #080c14;
+            --card-bg: #101726;
             --blue-primary: #1e3a8a;
             --blue-light: #3b82f6;
             --blue-accent: #60a5fa;
             --text-main: #f0f4f8;
             --text-muted: #94a3b8;
-            --border-color: #1e293b;
+            --border-color: #1a2744;
         }
 
         * {
@@ -54,59 +54,59 @@
 
         .envelope-container {
             text-align: center;
-            animation: pulse 2s infinite;
+            animation: envelopePulse 2s infinite ease-in-out;
         }
 
         .envelope-container img {
             width: 180px;
             max-width: 80vw;
-            filter: drop-shadow(0 10px 25px rgba(59, 130, 246, 0.3));
+            filter: drop-shadow(0 10px 30px rgba(59, 130, 246, 0.4));
         }
 
         .envelope-container p {
             margin-top: 20px;
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            letter-spacing: 1px;
+            color: var(--blue-accent);
+            font-size: 1rem;
+            letter-spacing: 2px;
+            font-weight: 500;
+            text-transform: uppercase;
         }
 
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+        @keyframes envelopePulse {
+            0%, 100% { transform: scale(1) translateY(0); }
+            50% { transform: scale(1.06) translateY(-5px); }
         }
 
-        /* Explosión inicial de elementos */
+        /* Explosión Juicy exclusiva de Lirios */
         .explosion-el {
             position: fixed;
-            width: 50px;
-            height: 50px;
             background-size: contain;
             background-repeat: no-repeat;
             pointer-events: none;
             z-index: 999;
             opacity: 0;
-            transition: all 1s cubic-bezier(0.1, 0.8, 0.3, 1);
+            transform: translate(-50%, -50%) scale(0.2);
+            transition: all 1.2s cubic-bezier(0.15, 0.85, 0.25, 1);
         }
 
-        /* Elementos flotantes de fondo */
+        /* Elementos flotantes de fondo más lentos y tranquilos (Lirios + Snoopy) */
         .bg-element {
             position: fixed;
             pointer-events: none;
-            opacity: 0.15;
+            opacity: 0.10;
             z-index: 0;
             animation: floatElement linear infinite;
         }
 
         @keyframes floatElement {
             0% {
-                transform: translateY(110vh) rotate(0deg);
+                transform: translateY(110vh) rotate(0deg) scale(0.8);
                 opacity: 0;
             }
-            15% { opacity: 0.15; }
-            85% { opacity: 0.15; }
+            15% { opacity: 0.12; }
+            85% { opacity: 0.12; }
             100% {
-                transform: translateY(-20vh) rotate(360deg);
+                transform: translateY(-20vh) rotate(360deg) scale(1.2);
                 opacity: 0;
             }
         }
@@ -115,7 +115,8 @@
         .main-content {
             opacity: 0;
             visibility: hidden;
-            transition: opacity 1s ease;
+            transform: translateY(20px);
+            transition: opacity 1s ease, transform 1s ease;
             width: 100%;
             max-width: 800px;
             padding: 40px 20px;
@@ -128,17 +129,19 @@
         .main-content.visible {
             opacity: 1;
             visibility: visible;
+            transform: translateY(0);
         }
 
         /* Carta sentimental */
         .letter-card {
             background-color: var(--card-bg);
             border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 40px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+            border-radius: 20px;
+            padding: 45px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.7);
             position: relative;
             overflow: hidden;
+            animation: fadeInUp 1s ease 0.2s both;
         }
 
         .letter-card::before {
@@ -148,7 +151,7 @@
             left: 0;
             width: 4px;
             height: 100%;
-            background-color: var(--blue-light);
+            background: linear-gradient(to bottom, var(--blue-light), var(--blue-primary));
         }
 
         .special-photo-container {
@@ -159,37 +162,38 @@
         }
 
         .polaroid {
-            background: #fff;
+            background: #ffffff;
             padding: 12px 12px 35px 12px;
-            border-radius: 4px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            border-radius: 6px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.6);
             transform: rotate(-2deg);
-            transition: transform 0.3s ease;
-            max-width: 260px;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            max-width: 270px;
             width: 100%;
         }
 
         .polaroid:hover {
-            transform: rotate(0deg) scale(1.02);
+            transform: rotate(0deg) scale(1.04);
         }
 
         .polaroid img {
             width: 100%;
             aspect-ratio: 1;
             object-fit: cover;
-            border-radius: 2px;
+            border-radius: 3px;
         }
 
         .polaroid-caption {
             text-align: center;
-            margin-top: 10px;
+            margin-top: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
             color: #0b0f19;
             font-family: 'Cinzel', serif;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
+            font-weight: 600;
         }
 
         .polaroid-caption img {
@@ -200,14 +204,15 @@
 
         .letter-card h1 {
             font-family: 'Cinzel', serif;
-            font-size: 1.6rem;
+            font-size: 1.8rem;
             margin-bottom: 25px;
             color: var(--text-main);
             text-align: center;
+            letter-spacing: 1px;
         }
 
         .letter-card p {
-            line-height: 1.8;
+            line-height: 1.9;
             color: var(--text-muted);
             font-size: 1.05rem;
             margin-bottom: 20px;
@@ -217,19 +222,20 @@
         /* Títulos de sección */
         .section-title {
             font-family: 'Cinzel', serif;
-            font-size: 1.3rem;
-            margin-bottom: 20px;
+            font-size: 1.4rem;
+            margin-bottom: 25px;
             color: var(--text-main);
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 15px;
+            animation: fadeInUp 1s ease both;
         }
 
         .section-title::after {
             content: '';
             flex: 1;
             height: 1px;
-            background-color: var(--border-color);
+            background: linear-gradient(to right, var(--border-color), transparent);
         }
 
         /* Carrusel de Música */
@@ -237,7 +243,7 @@
             display: flex;
             gap: 20px;
             overflow-x: auto;
-            padding-bottom: 15px;
+            padding: 10px 5px 20px 5px;
             scrollbar-width: thin;
             scrollbar-color: var(--blue-primary) var(--bg-color);
         }
@@ -252,27 +258,29 @@
         }
 
         .music-item {
-            min-width: 150px;
-            max-width: 150px;
+            min-width: 160px;
+            max-width: 160px;
             background: var(--card-bg);
             border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 12px;
+            border-radius: 14px;
+            padding: 14px;
             text-align: center;
-            transition: transform 0.3s ease, border-color 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            animation: fadeInUp 1s ease both;
         }
 
         .music-item:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px) scale(1.02);
             border-color: var(--blue-light);
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.2);
         }
 
         .music-item img {
             width: 100%;
             aspect-ratio: 1;
             object-fit: cover;
-            border-radius: 8px;
-            margin-bottom: 10px;
+            border-radius: 10px;
+            margin-bottom: 12px;
         }
 
         .music-item h3 {
@@ -290,7 +298,7 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            margin-top: 4px;
+            margin-top: 5px;
         }
 
         /* Grilla de Películas */
@@ -305,6 +313,7 @@
             aspect-ratio: 2/3;
             perspective: 1000px;
             cursor: pointer;
+            animation: fadeInUp 1s ease both;
         }
 
         .movie-card-inner {
@@ -312,10 +321,10 @@
             width: 100%;
             height: 100%;
             text-align: center;
-            transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+            transition: transform 0.7s cubic-bezier(0.4, 0.2, 0.2, 1);
             transform-style: preserve-3d;
-            border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+            border-radius: 14px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
         }
 
         .movie-card.flipped .movie-card-inner {
@@ -327,7 +336,7 @@
             width: 100%;
             height: 100%;
             backface-visibility: hidden;
-            border-radius: 12px;
+            border-radius: 14px;
             overflow: hidden;
             border: 1px solid var(--border-color);
         }
@@ -336,6 +345,11 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .movie-card:hover .movie-card-front img {
+            transform: scale(1.05);
         }
 
         .movie-card-back {
@@ -358,48 +372,69 @@
             font-style: italic;
         }
 
-        /* Reproductor flotante */
+        /* Reproductor flotante elegante con botón único */
         .audio-player-container {
             position: fixed;
-            bottom: 25px;
-            right: 25px;
-            background: var(--card-bg);
+            bottom: 30px;
+            right: 30px;
+            background: rgba(16, 23, 38, 0.85);
             border: 1px solid var(--blue-light);
             border-radius: 50px;
-            padding: 10px 20px;
+            padding: 8px 18px;
             display: flex;
             align-items: center;
             gap: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.8);
             z-index: 100;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(12px);
+            animation: bounceIn 0.8s ease;
         }
 
         .play-btn {
             background: var(--blue-primary);
             border: none;
-            width: 35px;
-            height: 35px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             color: white;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: background 0.3s;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
         }
 
         .play-btn:hover {
             background: var(--blue-light);
+            transform: scale(1.1);
         }
 
         .audio-info {
             font-size: 0.85rem;
             color: var(--text-muted);
+            letter-spacing: 0.5px;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0); opacity: 0; }
+            70% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
         }
 
         @media (max-width: 600px) {
-            .letter-card { padding: 25px; }
+            .letter-card { padding: 30px 20px; }
             .movies-grid { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
@@ -420,7 +455,7 @@
         <div class="letter-card">
             <div class="special-photo-container">
                 <div class="polaroid">
-                    <img src="016d5e64-3968-41d7-9319-cdbab2b95c3a.jpg" alt="Nuestra foto">
+                    <img src="016d5e64-3968-41d7-9319-cdbab2b957de.jpg" alt="Nuestra foto">
                     <div class="polaroid-caption">
                         <img src="CASSETTE.png" alt="Cassette">
                         <span>Siempre tú</span>
@@ -539,14 +574,14 @@ Gracias por quedarte, por ser esa calma en mis días y por dejarme compartir la 
 
     </div>
 
-    <!-- Reproductor de música flotante -->
+    <!-- Reproductor de música flotante con botón único -->
     <div class="audio-player-container" id="audioPlayerContainer" style="display: none;">
-        <button class="play-btn" id="playBtn" onclick="togglePlay()">▶</button>
-        <div class="audio-info">Reproduciendo música</div>
+        <button class="play-btn" id="playBtn" onclick="togglePlay()">❚❚</button>
+        <div class="audio-info">Nuestra canción</div>
     </div>
 
     <audio id="bgMusic" loop>
-        <source src="HECOPARATI.JPG" type="audio/mp3">
+        <source src="Your Turn.mp3" type="audio/mp3">
     </audio>
 
     <script>
@@ -563,7 +598,7 @@ Gracias por quedarte, por ser esa calma en mis días y por dejarme compartir la 
                 audioPlayerContainer.style.display = 'flex';
             }).catch(e => console.log("Audio play blocked", e));
 
-            createExplosion();
+            createJuicyExplosion();
 
             overlay.style.opacity = '0';
             setTimeout(() => {
@@ -583,18 +618,23 @@ Gracias por quedarte, por ser esa calma en mis días y por dejarme compartir la 
             }
         }
 
-        function createExplosion() {
-            const assets = [
-                'Snoopy fondo.png', 'SNOOPY FONDO2.png', 
+        // Explosión de lirios exclusiva
+        function createJuicyExplosion() {
+            const lilyAssets = [
                 'LIRIO1.png', 'LIRIO2.png', 'LIRIO3.png', 
                 'LIRIOSSS.png', 'LIRIOotro.png', 'OTROLIRIO.png'
             ];
-            const count = 30;
+            const count = 65;
+            
             for (let i = 0; i < count; i++) {
                 const el = document.createElement('div');
                 el.className = 'explosion-el';
-                const randomAsset = assets[Math.floor(Math.random() * assets.length)];
+                const randomAsset = lilyAssets[Math.floor(Math.random() * lilyAssets.length)];
                 el.style.backgroundImage = `url('${randomAsset}')`;
+                
+                const size = 35 + Math.random() * 65;
+                el.style.width = size + 'px';
+                el.style.height = size + 'px';
                 
                 const startX = window.innerWidth / 2;
                 const startY = window.innerHeight / 2;
@@ -604,48 +644,53 @@ Gracias por quedarte, por ser esa calma en mis días y por dejarme compartir la 
                 document.body.appendChild(el);
 
                 const angle = Math.random() * Math.PI * 2;
-                const distance = 80 + Math.random() * 320;
+                const distance = 100 + Math.random() * (window.innerWidth > 600 ? 500 : 320);
                 const targetX = startX + Math.cos(angle) * distance;
                 const targetY = startY + Math.sin(angle) * distance;
+                const finalRotation = Math.random() * 720 - 360;
 
                 requestAnimationFrame(() => {
                     el.style.opacity = '1';
-                    el.style.transform = `translate(${targetX - startX}px, ${targetY - startY}px) scale(${0.5 + Math.random() * 0.8}) rotate(${Math.random() * 360}deg)`;
+                    el.style.transform = `translate(${targetX - startX}px, ${targetY - startY}px) scale(1) rotate(${finalRotation}deg)`;
                 });
 
                 setTimeout(() => {
                     el.style.opacity = '0';
-                    setTimeout(() => el.remove(), 1000);
+                    el.style.transform += ` scale(0.5)`;
+                    setTimeout(() => el.remove(), 1200);
                 }, 1000);
             }
         }
 
+        // Fondo tranquilo, lento y con variedad de tamaños (Lirios + Snoopy)
         function startBackgroundElements() {
-            const assets = [
-                'Snoopy fondo.png', 'SNOOPY FONDO2.png', 
+            const backgroundAssets = [
                 'LIRIO1.png', 'LIRIO2.png', 'LIRIO3.png', 
-                'LIRIOSSS.png', 'LIRIOotro.png', 'OTROLIRIO.png'
+                'LIRIOSSS.png', 'LIRIOotro.png', 'OTROLIRIO.png',
+                'SNOOPY.png' // Asegúrate de tener este archivo o ajusta el nombre si está en tus archivos
             ];
 
+            // Intervalo más espaciado para que sea fluido y tranquilo
             setInterval(() => {
                 const el = document.createElement('div');
                 el.className = 'bg-element';
-                const randomAsset = assets[Math.floor(Math.random() * assets.length)];
+                const randomAsset = backgroundAssets[Math.floor(Math.random() * backgroundAssets.length)];
                 el.style.backgroundImage = `url('${randomAsset}')`;
                 el.style.backgroundSize = 'contain';
                 el.style.backgroundRepeat = 'no-repeat';
                 
-                const size = 40 + Math.random() * 40;
+                const size = 25 + Math.random() * 50; // Tamaños variados
                 el.style.width = size + 'px';
                 el.style.height = size + 'px';
                 el.style.left = Math.random() * window.innerWidth + 'px';
                 
-                const duration = 9 + Math.random() * 8;
+                // Duración mucho más larga para darle un movimiento lento y relajante (15 a 25 segundos)
+                const duration = 15 + Math.random() * 10;
                 el.style.animationDuration = duration + 's';
 
                 document.body.appendChild(el);
                 setTimeout(() => el.remove(), duration * 1000);
-            }, 500);
+            }, 1200);
         }
     </script>
 </body>
