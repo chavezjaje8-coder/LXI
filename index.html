@@ -49,7 +49,7 @@
             align-items: center;
             z-index: 1000;
             cursor: pointer;
-            transition: opacity 1s ease;
+            transition: opacity 0.8s ease;
         }
 
         .envelope-container {
@@ -77,30 +77,16 @@
             50% { transform: scale(1.06) translateY(-5px); }
         }
 
-        /* Fuente centralizada de Lirios (Súper abundante y fluida desde el mismo punto) */
-        .fountain-lily {
+        /* Explosión Radial Masiva, Hermosa y Dinámica (Con tamaños variados y gran escala) */
+        .explosion-el {
             position: fixed;
             background-size: contain;
             background-repeat: no-repeat;
             pointer-events: none;
             z-index: 999;
-            opacity: 0;
-            transform: translate(-50%, -50%) scale(0.2);
-            animation: fountainAnimation 2.8s cubic-bezier(0.1, 0.7, 0.3, 1) forwards;
-        }
-
-        @keyframes fountainAnimation {
-            0% {
-                opacity: 1;
-                transform: translate(-50%, -50%) scale(0.2) rotate(0deg);
-            }
-            30% {
-                opacity: 1;
-            }
-            100% {
-                opacity: 0;
-                transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(var(--end-scale)) rotate(var(--rot));
-            }
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(0.1);
+            transition: transform 1.8s cubic-bezier(0.1, 0.85, 0.2, 1), opacity 1.8s ease;
         }
 
         /* Elementos flotantes de fondo lentos y tranquilos (Lirios + Snoopy) */
@@ -177,7 +163,7 @@
 
         .polaroid {
             background: #ffffff;
-            padding: 12px 12px 35px 12px;
+            padding: 12px 12px 12px 12px; /* Margen uniforme limpio sin texto abajo */
             border-radius: 6px;
             box-shadow: 0 12px 30px rgba(0,0,0,0.6);
             transform: rotate(-2deg);
@@ -195,25 +181,7 @@
             aspect-ratio: 1;
             object-fit: cover;
             border-radius: 3px;
-        }
-
-        .polaroid-caption {
-            text-align: center;
-            margin-top: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            color: #0b0f19;
-            font-family: 'Cinzel', serif;
-            font-size: 0.9rem;
-            font-weight: 600;
-        }
-
-        .polaroid-caption img {
-            width: 20px;
-            height: 20px;
-            object-fit: contain;
+            display: block;
         }
 
         .letter-card h1 {
@@ -470,10 +438,6 @@
             <div class="special-photo-container">
                 <div class="polaroid">
                     <img src="FOTO.jpg" alt="Nuestra foto">
-                    <div class="polaroid-caption">
-                        <img src="CASSETTE.png" alt="Cassette">
-                        <span>Siempre tú</span>
-                    </div>
                 </div>
             </div>
 
@@ -630,14 +594,14 @@ Gracias por quedarte, por ser esa calma en mis días y por dejarme compartir la 
 
             }).catch(e => console.log("Audio play blocked", e));
 
-            createLilyFountain(startX, startY);
+            createJuicyExplosion(startX, startY);
 
             overlay.style.opacity = '0';
             setTimeout(() => {
                 overlay.style.display = 'none';
                 mainContent.classList.add('visible');
                 startBackgroundElements();
-            }, 900);
+            }, 800);
         }
 
         function togglePlay() {
@@ -650,52 +614,46 @@ Gracias por quedarte, por ser esa calma en mis días y por dejarme compartir la 
             }
         }
 
-        // Fuente masiva y fluida: Todos brotan exactamente del mismo punto con un ritmo elegante
-        function createLilyFountain(startX, startY) {
+        // Explosión radial espectacular, masiva y con tamaños sumamente variados (grandes, chicos, medianos)
+        function createJuicyExplosion(startX, startY) {
             const lilyAssets = [
                 'LIRIO1.png', 'LIRIO2.png', 'LIRIO3.png', 
                 'LIRIOSSS.png', 'LIRIOotro.png', 'OTROLIRIO.png'
             ];
-            const totalLilies = 130; // Súper abundante
+            const count = 75; // Cantidad masiva para que se llene toda la pantalla
             
-            for (let i = 0; i < totalLilies; i++) {
-                // Generamos los elementos con un ligero desfase (delay) en oleadas para que broten continuamente
+            for (let i = 0; i < count; i++) {
+                const el = document.createElement('div');
+                el.className = 'explosion-el';
+                const randomAsset = lilyAssets[Math.floor(Math.random() * lilyAssets.length)];
+                el.style.backgroundImage = `url('${randomAsset}')`;
+                
+                // Tamaños muy variados: algunos pequeños y otros gigantescos para un look hermoso
+                const size = 35 + Math.random() * 95;
+                el.style.width = size + 'px';
+                el.style.height = size + 'px';
+                
+                el.style.left = startX + 'px';
+                el.style.top = startY + 'px';
+                
+                document.body.appendChild(el);
+
+                // Ángulos radiales en 360 grados completos (hacia todos lados, con distintas distancias)
+                const angle = Math.random() * Math.PI * 2;
+                const distance = 100 + Math.random() * (window.innerWidth > 600 ? 580 : 380);
+                const targetX = startX + Math.cos(angle) * distance;
+                const targetY = startY + Math.sin(angle) * distance;
+                const finalRotation = Math.random() * 720 - 360;
+
+                requestAnimationFrame(() => {
+                    el.style.transform = `translate(${targetX - startX}px, ${targetY - startY}px) scale(1) rotate(${finalRotation}deg)`;
+                });
+
+                // Desvanecimiento suave y fluido
                 setTimeout(() => {
-                    if (!document.getElementById('envelope-overlay') && document.body.contains(document.getElementById('mainContent')) == false) return;
-                    
-                    const el = document.createElement('div');
-                    el.className = 'fountain-lily';
-                    const randomAsset = lilyAssets[Math.floor(Math.random() * lilyAssets.length)];
-                    el.style.backgroundImage = `url('${randomAsset}')`;
-                    
-                    // Tamaños variados
-                    const size = 35 + Math.random() * 65;
-                    el.style.width = size + 'px';
-                    el.style.height = size + 'px';
-                    
-                    // Nacen exactamente en el centro del sobre
-                    el.style.left = startX + 'px';
-                    el.style.top = startY + 'px';
-
-                    // Todos se desplazan hacia arriba o con una dispersión muy sutil y estrecha (flujo unificado)
-                    const angle = -Math.PI / 2 + (Math.random() - 0.5) * 1.2; // Abanico vertical hacia arriba
-                    const distance = 150 + Math.random() * 420; // Distancia de expansión vertical
-                    
-                    const dx = Math.cos(angle) * distance;
-                    const dy = Math.sin(angle) * distance; // Negativo es hacia arriba
-                    const endScale = 0.8 + Math.random() * 0.6;
-                    const rot = Math.random() * 360 - 180;
-
-                    el.style.setProperty('--dx', dx + 'px');
-                    el.style.setProperty('--dy', dy + 'px');
-                    el.style.setProperty('--end-scale', endScale);
-                    el.style.setProperty('--rot', rot + 'deg');
-
-                    document.body.appendChild(el);
-
-                    // Limpieza automática al terminar su animación
-                    setTimeout(() => el.remove(), 2800);
-                }, i * 18); // Oleada constante y fluida
+                    el.style.opacity = '0';
+                    setTimeout(() => el.remove(), 1800);
+                }, 1200);
             }
         }
 
