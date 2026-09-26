@@ -77,23 +77,23 @@
             50% { transform: scale(1.06) translateY(-5px); }
         }
 
-        /* Explosión Juicy exclusiva de Lirios */
+        /* Explosión Masiva y Juicy desde el centro del sobre */
         .explosion-el {
             position: fixed;
             background-size: contain;
             background-repeat: no-repeat;
             pointer-events: none;
             z-index: 999;
-            opacity: 0;
-            transform: translate(-50%, -50%) scale(0.2);
-            transition: all 1.2s cubic-bezier(0.15, 0.85, 0.25, 1);
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(0.1);
+            transition: transform 1.2s cubic-bezier(0.1, 0.9, 0.2, 1), opacity 1.2s ease;
         }
 
-        /* Elementos flotantes de fondo más lentos y tranquilos (Lirios + Snoopy) */
+        /* Elementos flotantes de fondo lentos y tranquilos (Lirios + Snoopy) */
         .bg-element {
             position: fixed;
             pointer-events: none;
-            opacity: 0.10;
+            opacity: 0.12;
             z-index: 0;
             animation: floatElement linear infinite;
         }
@@ -103,8 +103,8 @@
                 transform: translateY(110vh) rotate(0deg) scale(0.8);
                 opacity: 0;
             }
-            15% { opacity: 0.12; }
-            85% { opacity: 0.12; }
+            15% { opacity: 0.14; }
+            85% { opacity: 0.14; }
             100% {
                 transform: translateY(-20vh) rotate(360deg) scale(1.2);
                 opacity: 0;
@@ -372,7 +372,7 @@
             font-style: italic;
         }
 
-        /* Reproductor flotante elegante con botón único */
+        /* Reproductor de música flotante con botón único */
         .audio-player-container {
             position: fixed;
             bottom: 30px;
@@ -443,7 +443,7 @@
 
     <!-- Pantalla de Bienvenida -->
     <div id="envelope-overlay" onclick="openEnvelope()">
-        <div class="envelope-container">
+        <div class="envelope-container" id="envelopeContainer">
             <img src="SOBRE.png" alt="Sobre">
             <p>Toca para abrir</p>
         </div>
@@ -592,13 +592,18 @@ Gracias por quedarte, por ser esa calma en mis días y por dejarme compartir la 
         function openEnvelope() {
             const overlay = document.getElementById('envelope-overlay');
             const mainContent = document.getElementById('mainContent');
+            const envelopeRect = document.getElementById('envelopeContainer').getBoundingClientRect();
             
+            // Centro exacto del sobre en la pantalla
+            const startX = envelopeRect.left + envelopeRect.width / 2;
+            const startY = envelopeRect.top + envelopeRect.height / 2;
+
             bgMusic.play().then(() => {
                 playBtn.textContent = '❚❚';
                 audioPlayerContainer.style.display = 'flex';
             }).catch(e => console.log("Audio play blocked", e));
 
-            createJuicyExplosion();
+            createJuicyExplosion(startX, startY);
 
             overlay.style.opacity = '0';
             setTimeout(() => {
@@ -618,13 +623,13 @@ Gracias por quedarte, por ser esa calma en mis días y por dejarme compartir la 
             }
         }
 
-        // Explosión de lirios exclusiva
-        function createJuicyExplosion() {
+        // Explosión jugosa y masiva brotando exactamente desde el sobre
+        function createJuicyExplosion(startX, startY) {
             const lilyAssets = [
                 'LIRIO1.png', 'LIRIO2.png', 'LIRIO3.png', 
                 'LIRIOSSS.png', 'LIRIOotro.png', 'OTROLIRIO.png'
             ];
-            const count = 65;
+            const count = 75; // Cantidad masiva
             
             for (let i = 0; i < count; i++) {
                 const el = document.createElement('div');
@@ -632,45 +637,43 @@ Gracias por quedarte, por ser esa calma en mis días y por dejarme compartir la 
                 const randomAsset = lilyAssets[Math.floor(Math.random() * lilyAssets.length)];
                 el.style.backgroundImage = `url('${randomAsset}')`;
                 
-                const size = 35 + Math.random() * 65;
+                // Tamaños variados (pequeños destellos y flores grandes)
+                const size = 30 + Math.random() * 70;
                 el.style.width = size + 'px';
                 el.style.height = size + 'px';
                 
-                const startX = window.innerWidth / 2;
-                const startY = window.innerHeight / 2;
                 el.style.left = startX + 'px';
                 el.style.top = startY + 'px';
                 
                 document.body.appendChild(el);
 
+                // Ángulos y distancias radiales explosivas desde el sobre
                 const angle = Math.random() * Math.PI * 2;
-                const distance = 100 + Math.random() * (window.innerWidth > 600 ? 500 : 320);
+                const distance = 120 + Math.random() * (window.innerWidth > 600 ? 550 : 350);
                 const targetX = startX + Math.cos(angle) * distance;
                 const targetY = startY + Math.sin(angle) * distance;
                 const finalRotation = Math.random() * 720 - 360;
 
                 requestAnimationFrame(() => {
-                    el.style.opacity = '1';
                     el.style.transform = `translate(${targetX - startX}px, ${targetY - startY}px) scale(1) rotate(${finalRotation}deg)`;
                 });
 
+                // Desvanecimiento gradual
                 setTimeout(() => {
                     el.style.opacity = '0';
-                    el.style.transform += ` scale(0.5)`;
                     setTimeout(() => el.remove(), 1200);
-                }, 1000);
+                }, 900);
             }
         }
 
-        // Fondo tranquilo, lento y con variedad de tamaños (Lirios + Snoopy)
+        // Fondo lento, tranquilo y relajado (Lirios + Snoopy)
         function startBackgroundElements() {
             const backgroundAssets = [
                 'LIRIO1.png', 'LIRIO2.png', 'LIRIO3.png', 
                 'LIRIOSSS.png', 'LIRIOotro.png', 'OTROLIRIO.png',
-                'SNOOPY.png' // Asegúrate de tener este archivo o ajusta el nombre si está en tus archivos
+                'SNOOPY.png'
             ];
 
-            // Intervalo más espaciado para que sea fluido y tranquilo
             setInterval(() => {
                 const el = document.createElement('div');
                 el.className = 'bg-element';
@@ -679,18 +682,18 @@ Gracias por quedarte, por ser esa calma en mis días y por dejarme compartir la 
                 el.style.backgroundSize = 'contain';
                 el.style.backgroundRepeat = 'no-repeat';
                 
-                const size = 25 + Math.random() * 50; // Tamaños variados
+                const size = 25 + Math.random() * 45;
                 el.style.width = size + 'px';
                 el.style.height = size + 'px';
                 el.style.left = Math.random() * window.innerWidth + 'px';
                 
-                // Duración mucho más larga para darle un movimiento lento y relajante (15 a 25 segundos)
-                const duration = 15 + Math.random() * 10;
+                // Duración larga para un movimiento muy pausado y suave
+                const duration = 16 + Math.random() * 10;
                 el.style.animationDuration = duration + 's';
 
                 document.body.appendChild(el);
                 setTimeout(() => el.remove(), duration * 1000);
-            }, 1200);
+            }, 1400);
         }
     </script>
 </body>
