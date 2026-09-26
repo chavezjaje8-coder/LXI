@@ -8,13 +8,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #121214;
-            --card-bg: #1a1a1e;
-            --wine-primary: #5c1d24;
-            --wine-light: #8a2e38;
-            --text-main: #f3f3f5;
-            --text-muted: #a1a1aa;
-            --border-color: #27272a;
+            --bg-color: #0b0f19;
+            --card-bg: #131c2e;
+            --blue-primary: #1e3a8a;
+            --blue-light: #3b82f6;
+            --blue-accent: #60a5fa;
+            --text-main: #f0f4f8;
+            --text-muted: #94a3b8;
+            --border-color: #1e293b;
         }
 
         * {
@@ -59,7 +60,7 @@
         .envelope-container img {
             width: 180px;
             max-width: 80vw;
-            filter: drop-shadow(0 10px 20px rgba(92, 29, 36, 0.3));
+            filter: drop-shadow(0 10px 25px rgba(59, 130, 246, 0.3));
         }
 
         .envelope-container p {
@@ -75,11 +76,24 @@
             100% { transform: scale(1); }
         }
 
-        /* Elementos flotantes de fondo (Lirios y Snoopy) */
+        /* Explosión inicial de elementos */
+        .explosion-el {
+            position: fixed;
+            width: 50px;
+            height: 50px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            pointer-events: none;
+            z-index: 999;
+            opacity: 0;
+            transition: all 1s cubic-bezier(0.1, 0.8, 0.3, 1);
+        }
+
+        /* Elementos flotantes de fondo */
         .bg-element {
             position: fixed;
             pointer-events: none;
-            opacity: 0.12;
+            opacity: 0.15;
             z-index: 0;
             animation: floatElement linear infinite;
         }
@@ -89,8 +103,8 @@
                 transform: translateY(110vh) rotate(0deg);
                 opacity: 0;
             }
-            15% { opacity: 0.12; }
-            85% { opacity: 0.12; }
+            15% { opacity: 0.15; }
+            85% { opacity: 0.15; }
             100% {
                 transform: translateY(-20vh) rotate(360deg);
                 opacity: 0;
@@ -116,13 +130,13 @@
             visibility: visible;
         }
 
-        /* Sección de la Carta con Foto Especial */
+        /* Carta sentimental */
         .letter-card {
             background-color: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 16px;
             padding: 40px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
             position: relative;
             overflow: hidden;
         }
@@ -134,10 +148,9 @@
             left: 0;
             width: 4px;
             height: 100%;
-            background-color: var(--wine-light);
+            background-color: var(--blue-light);
         }
 
-        /* Contenedor de la foto especial estilo Polaroid */
         .special-photo-container {
             display: flex;
             flex-direction: column;
@@ -149,12 +162,11 @@
             background: #fff;
             padding: 12px 12px 35px 12px;
             border-radius: 4px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
             transform: rotate(-2deg);
             transition: transform 0.3s ease;
             max-width: 260px;
             width: 100%;
-            position: relative;
         }
 
         .polaroid:hover {
@@ -175,7 +187,7 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            color: #121214;
+            color: #0b0f19;
             font-family: 'Cinzel', serif;
             font-size: 0.85rem;
         }
@@ -220,14 +232,14 @@
             background-color: var(--border-color);
         }
 
-        /* Carrusel / Grilla de Música */
+        /* Carrusel de Música */
         .music-scroll {
             display: flex;
             gap: 20px;
             overflow-x: auto;
             padding-bottom: 15px;
             scrollbar-width: thin;
-            scrollbar-color: var(--wine-primary) var(--bg-color);
+            scrollbar-color: var(--blue-primary) var(--bg-color);
         }
 
         .music-scroll::-webkit-scrollbar {
@@ -235,7 +247,7 @@
         }
 
         .music-scroll::-webkit-scrollbar-thumb {
-            background-color: var(--wine-primary);
+            background-color: var(--blue-primary);
             border-radius: 3px;
         }
 
@@ -252,7 +264,7 @@
 
         .music-item:hover {
             transform: translateY(-5px);
-            border-color: var(--wine-light);
+            border-color: var(--blue-light);
         }
 
         .music-item img {
@@ -281,7 +293,7 @@
             margin-top: 4px;
         }
 
-        /* Grilla de Películas (Flip Cards) */
+        /* Grilla de Películas */
         .movies-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -303,7 +315,7 @@
             transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
             transform-style: preserve-3d;
             border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.5);
         }
 
         .movie-card.flipped .movie-card-inner {
@@ -336,7 +348,7 @@
             align-items: center;
             padding: 20px;
             text-align: center;
-            border-color: var(--wine-light);
+            border-color: var(--blue-light);
         }
 
         .movie-card-back p {
@@ -346,25 +358,25 @@
             font-style: italic;
         }
 
-        /* Reproductor de música flotante */
+        /* Reproductor flotante */
         .audio-player-container {
             position: fixed;
             bottom: 25px;
             right: 25px;
             background: var(--card-bg);
-            border: 1px solid var(--wine-light);
+            border: 1px solid var(--blue-light);
             border-radius: 50px;
             padding: 10px 20px;
             display: flex;
             align-items: center;
             gap: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
             z-index: 100;
             backdrop-filter: blur(10px);
         }
 
         .play-btn {
-            background: var(--wine-primary);
+            background: var(--blue-primary);
             border: none;
             width: 35px;
             height: 35px;
@@ -378,7 +390,7 @@
         }
 
         .play-btn:hover {
-            background: var(--wine-light);
+            background: var(--blue-light);
         }
 
         .audio-info {
@@ -394,7 +406,7 @@
 </head>
 <body>
 
-    <!-- Pantalla de Bienvenida con Sobre -->
+    <!-- Pantalla de Bienvenida -->
     <div id="envelope-overlay" onclick="openEnvelope()">
         <div class="envelope-container">
             <img src="SOBRE.png" alt="Sobre">
@@ -405,11 +417,10 @@
     <!-- Contenido Principal -->
     <div class="main-content" id="mainContent">
         
-        <!-- Carta sentimental con la foto especial -->
         <div class="letter-card">
             <div class="special-photo-container">
                 <div class="polaroid">
-                    <img src="016d5e64-3968-41d..." alt="Nuestra foto">
+                    <img src="016d5e64-3968-41d7-9319-cdbab2b95c3a.jpg" alt="Nuestra foto">
                     <div class="polaroid-caption">
                         <img src="CASSETTE.png" alt="Cassette">
                         <span>Siempre tú</span>
@@ -420,7 +431,7 @@
             <h1>Hola, mi niña.</h1>
             <p>Quería hacerte algo diferente, un pequeño espacio que se quedara guardado aquí para cuando quieras volver a él y recordarlo. Sé que a veces no encuentro las palabras exactas para decirte todo lo que pasa por mi cabeza, pero de verdad sentía la necesidad de dejarte esto hoy. 
 
-Entre tanto ruido y tanta prisa, tú siempre eres ese lugar al que quiero regresar. Quise reunir aquí algunas canciones que me recuerdan a ti, de esas que suenan y automáticamente te traen a mi mente. Espero que al escucharlas sientas un poquito de lo mucho que te pienso, incluso cuando no estamos juntos.
+Entre tanto ruido y tanta prisa, tú siempre eres ese lugar al que quiero regresar. Quise reunir aquí algunas canciones que me recuerdan a ti, de esas que suenan y automáticamente traen a mi mente. Espero que al escucharlas sientas un poquito de lo mucho que te pienso, incluso cuando no estamos juntos.
 
 Abajo también dejé algunas películas que siento que de alguna manera nos retratan, con pequeños fragmentos que se quedan grabados. Si les das clic, vas a ver a qué me refiero. 
 
@@ -442,7 +453,7 @@ Gracias por quedarte, por ser esa calma en mis días y por dejarme compartir la 
                     <p>Gera MX</p>
                 </div>
                 <div class="music-item">
-                    <img src="YOSIEMPRECONTEST..." alt="Yo siempre contesto">
+                    <img src="YOSIEMPRECONTESTO.JPG" alt="Yo siempre contesto">
                     <h3>Yo siempre contesto</h3>
                     <p>LATIN MAFIA</p>
                 </div>
@@ -452,7 +463,7 @@ Gracias por quedarte, por ser esa calma en mis días y por dejarme compartir la 
                     <p>Rels B, Itchy</p>
                 </div>
                 <div class="music-item">
-                    <img src="ROJAENTREROSAA.J..." alt="Roja Entre Rosas">
+                    <img src="ROJAENTREROSAA.JPG" alt="Roja Entre Rosas">
                     <h3>Roja Entre Rosas</h3>
                     <p>Adán Cruz, Shroom</p>
                 </div>
@@ -469,22 +480,20 @@ Gracias por quedarte, por ser esa calma en mis días y por dejarme compartir la 
             </div>
         </div>
 
-        <!-- Sección de Películas con Frases Románticas -->
+        <!-- Sección de Películas -->
         <div class="movies-section">
             <h2 class="section-title">Nuestras Películas</h2>
             <div class="movies-grid">
-                <!-- Película 1 -->
                 <div class="movie-card" onclick="this.classList.toggle('flipped')">
                     <div class="movie-card-inner">
                         <div class="movie-card-front">
-                            <img src="De todos los chicos .J..." alt="To All the Boys">
+                            <img src="De todos los chicos .JPG" alt="To All the Boys">
                         </div>
                         <div class="movie-card-back">
                             <p>“Pertenecer a alguien... siento que es todo lo que siempre quise.”</p>
                         </div>
                     </div>
                 </div>
-                <!-- Película 2 -->
                 <div class="movie-card" onclick="this.classList.toggle('flipped')">
                     <div class="movie-card-inner">
                         <div class="movie-card-front">
@@ -495,18 +504,16 @@ Gracias por quedarte, por ser esa calma en mis días y por dejarme compartir la 
                         </div>
                     </div>
                 </div>
-                <!-- Película 3 -->
                 <div class="movie-card" onclick="this.classList.toggle('flipped')">
                     <div class="movie-card-inner">
                         <div class="movie-card-front">
-                            <img src="COMOO PERDER A U..." alt="How to Lose a Guy">
+                            <img src="COMOO PERDER A UN CHICO.JPG" alt="How to Lose a Guy">
                         </div>
                         <div class="movie-card-back">
                             <p>“Tú eres la manzana de mi ojo.”</p>
                         </div>
                     </div>
                 </div>
-                <!-- Película 4 -->
                 <div class="movie-card" onclick="this.classList.toggle('flipped')">
                     <div class="movie-card-inner">
                         <div class="movie-card-front">
@@ -517,7 +524,6 @@ Gracias por quedarte, por ser esa calma en mis días y por dejarme compartir la 
                         </div>
                     </div>
                 </div>
-                <!-- Película 5 -->
                 <div class="movie-card" onclick="this.classList.toggle('flipped')">
                     <div class="movie-card-inner">
                         <div class="movie-card-front">
@@ -557,6 +563,8 @@ Gracias por quedarte, por ser esa calma en mis días y por dejarme compartir la 
                 audioPlayerContainer.style.display = 'flex';
             }).catch(e => console.log("Audio play blocked", e));
 
+            createExplosion();
+
             overlay.style.opacity = '0';
             setTimeout(() => {
                 overlay.style.display = 'none';
@@ -575,27 +583,59 @@ Gracias por quedarte, por ser esa calma en mis días y por dejarme compartir la 
             }
         }
 
+        function createExplosion() {
+            const assets = [
+                'Snoopy fondo.png', 'SNOOPY FONDO2.png', 
+                'LIRIO1.png', 'LIRIO2.png', 'LIRIO3.png', 
+                'LIRIOSSS.png', 'LIRIOotro.png', 'OTROLIRIO.png'
+            ];
+            const count = 30;
+            for (let i = 0; i < count; i++) {
+                const el = document.createElement('div');
+                el.className = 'explosion-el';
+                const randomAsset = assets[Math.floor(Math.random() * assets.length)];
+                el.style.backgroundImage = `url('${randomAsset}')`;
+                
+                const startX = window.innerWidth / 2;
+                const startY = window.innerHeight / 2;
+                el.style.left = startX + 'px';
+                el.style.top = startY + 'px';
+                
+                document.body.appendChild(el);
+
+                const angle = Math.random() * Math.PI * 2;
+                const distance = 80 + Math.random() * 320;
+                const targetX = startX + Math.cos(angle) * distance;
+                const targetY = startY + Math.sin(angle) * distance;
+
+                requestAnimationFrame(() => {
+                    el.style.opacity = '1';
+                    el.style.transform = `translate(${targetX - startX}px, ${targetY - startY}px) scale(${0.5 + Math.random() * 0.8}) rotate(${Math.random() * 360}deg)`;
+                });
+
+                setTimeout(() => {
+                    el.style.opacity = '0';
+                    setTimeout(() => el.remove(), 1000);
+                }, 1000);
+            }
+        }
+
         function startBackgroundElements() {
-            const elements = [
-                'Snoopy fondo.png', 
-                'SNOOPY FONDO2.png', 
-                'LIRIO1.png', 
-                'LIRIO2.png', 
-                'LIRIO3.png', 
-                'LIRIOSSS.png', 
-                'LIRIOotro.png', 
-                'OTROLIRIO.png'
+            const assets = [
+                'Snoopy fondo.png', 'SNOOPY FONDO2.png', 
+                'LIRIO1.png', 'LIRIO2.png', 'LIRIO3.png', 
+                'LIRIOSSS.png', 'LIRIOotro.png', 'OTROLIRIO.png'
             ];
 
             setInterval(() => {
                 const el = document.createElement('div');
                 el.className = 'bg-element';
-                const randomAsset = elements[Math.floor(Math.random() * elements.length)];
+                const randomAsset = assets[Math.floor(Math.random() * assets.length)];
                 el.style.backgroundImage = `url('${randomAsset}')`;
                 el.style.backgroundSize = 'contain';
                 el.style.backgroundRepeat = 'no-repeat';
                 
-                const size = 45 + Math.random() * 45;
+                const size = 40 + Math.random() * 40;
                 el.style.width = size + 'px';
                 el.style.height = size + 'px';
                 el.style.left = Math.random() * window.innerWidth + 'px';
